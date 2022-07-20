@@ -11,43 +11,25 @@ class Feedback extends React.Component {
     good: 0,
     neutral: 0,
     bad: 0,
-    total: 0,
-    positivePercentage: 0,
   };
 
   onLeaveFeedback = event => {
-    this.setState({ [event.target.name]: this.state[event.target.name] + 1 }, () => {
-      this.countTotalFeedback();
-      this.countPositiveFeedbackPercentage();
-    });
+    this.setState({ [event.target.name]: this.state[event.target.name] + 1 });
   };
-
-
-  countTotalFeedback = () => {
-    this.setState((prevState) => ({
-      total: prevState.good + prevState.neutral + prevState.bad,
-    }));
-  };
-
-  countPositiveFeedbackPercentage = () => {
-    this.setState((prevState) => ({
-      positivePercentage: Number((prevState.good / prevState.total * 100).toFixed(0)),
-    }));
-  };
-
 
   render() {
-    const { good, neutral, bad, total, positivePercentage } = this.state;
+    const { good, neutral, bad} = this.state;
+    const showStatistics = good > 0 || neutral > 0 || bad > 0;
     return (
       <div className={s.feedbackWrapper}>
         <Section title={'Please Leave Feedback'}>
-          <FeedbackOptions onLeaveFeedback={this.onLeaveFeedback} />
+          <FeedbackOptions onLeaveFeedback={this.onLeaveFeedback} options={['Good', 'Neutral', 'Bad']}/>
         </Section>
 
         <Section title={'Statistics'}>
           {
-            total > 0
-              ? <Statistics good={good} neutral={neutral} bad={bad} total={total} positivePercentage={positivePercentage} />
+            showStatistics > 0
+              ? <Statistics good={good} neutral={neutral} bad={bad}/>
               : <Notification message="There is no feedback"/>
           }
 

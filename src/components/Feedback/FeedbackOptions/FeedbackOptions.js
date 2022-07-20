@@ -1,23 +1,20 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import s from '../feedback.module.scss';
 
-class FeedbackOptions extends Component {
-  static propTypes = {
-    onLeaveFeedback: PropTypes.func
-  };
-
-
-  render() {
-    const {onLeaveFeedback} = this.props;
-    return(
-      <div className={s.buttons}>
-        <button onClick={onLeaveFeedback} name='good'>Good</button>
-        <button onClick={onLeaveFeedback} name='neutral'>Neutral</button>
-        <button onClick={onLeaveFeedback} name='bad'>Bad</button>
-      </div>
-    )
-  }
+function FeedbackOptions({onLeaveFeedback, options}) {
+  return (
+    <div className={s.buttons}>
+      {
+        options.map(opt => <button key={String(opt)} onClick={onLeaveFeedback} name={String(opt).toLowerCase()}>{opt}</button>)
+      }
+    </div>
+  );
 }
+
+FeedbackOptions.propTypes = {
+  onLeaveFeedback: PropTypes.func,
+  options: PropTypes.array,
+};
 
 export default FeedbackOptions;
